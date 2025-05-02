@@ -116,3 +116,24 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+
+
+
+import os
+
+
+# Create export directory
+os.makedirs("exported_model", exist_ok=True)
+
+# 1. Save the full Keras model
+model.save("exported_model/recycling_model.h5")
+
+# 2. Convert to TensorFlow Lite without quantization
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+# 3. Save the .tflite model
+with open("exported_model/recycling_model.tflite", "wb") as f:
+    f.write(tflite_model)
+
+print("Model saved as H5 and TFLite(float32)")
